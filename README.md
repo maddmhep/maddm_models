@@ -72,7 +72,7 @@ Copy or symlink the UFO folder (the inner `<ModelName>/<ModelName>`) into the
 ```
 import model eDMsimp_s_spin0
 define darkmatter Xd
-generate relic_density
+generate direct
 ...
 ```
 
