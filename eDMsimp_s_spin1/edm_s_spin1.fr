@@ -1,0 +1,149 @@
+(* ************************************************************************** *)
+(* *****  FeynRules model file: Simplified DM models                    ***** *)
+(* *****                        DM-e scattering real spin-0 mediator    ***** *)
+(* *****                                                                ***** *)
+(* *****  Author:               Gian Marco Lucchetti                    ***** *)
+(* *****  Date:                 11/12/2023                              ***** *)
+(* ************************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "eDMsimp_s_spin1";
+
+M$Information = {
+ Authors      -> {"Gian Marco Lucchetti"}, 
+ Institutions -> {"University of Bologna"},
+ Emails       -> {"gianmarco.lucchetti@unibo.it"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/",  
+ References   -> {"Haider Alhazmi et al., arXiv:2006.16252v2"},
+ Version      -> "1.0",
+ Date         -> "2025.05.29"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* none *) 
+
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = {
+ {DMC, 2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {DMC, 2}, {QED, 2}
+};
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+	
+	S[8] == {
+        ClassName -> Xc,
+        SelfConjugate -> False,
+        Mass -> {MXc, 1.},
+        Width -> 0,
+        PDG -> 52,
+        TeX -> Subscript[X,c],
+        FullName -> "Complex scalar DM" },
+
+    F[7] == {
+        ClassName -> Xd,
+        SelfConjugate -> False,
+        Mass -> {MXd, 1.0},
+        Width -> 0,
+        PDG -> 53,
+        TeX -> Subscript[X,d],
+        FullName -> "Dirac DM" },
+
+    F[8] == {
+        ClassName -> Xm,
+        SelfConjugate -> True,
+        Mass -> {MXm, 1.0},
+        Width -> 0,
+        PDG -> 55,
+        TeX -> Subscript[X,m],
+        FullName -> "Majorana DM" },
+
+    V[7] == {
+        ClassName -> Y1,
+	    SelfConjugate -> True,
+	    Mass -> {MY1, 100.},
+        Width -> 0,
+        PDG -> 54,
+        TeX -> Subscript[Y,1],
+        FullName -> "Spin-1 mediator" }
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+
+    gVXc =={ 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,VXc],
+        Description -> "Xc-Y1 vector coupling",
+        Value -> 0. },
+
+    gVXd == { 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,VXd],
+        Description -> "Xd-Y1 vector coupling",
+        Value -> 1. },
+
+    gVe == { 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,Ve],
+        Description -> "e-Y1 vector coupling",
+        Value -> 1. },
+
+    gAXd == {
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,AXd],
+        Description -> "Xd-Y1 axial coupling",
+        Value -> 1. },
+
+    gAXm == {
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,AXm],
+        Description -> "Xm-Y1 axial coupling",
+        Value -> 0. },
+
+    gAe == { 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,Ae],
+        Description -> "e-Y1 axial coupling",
+        Value -> 1. }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LVDM := - I gVXc/2 (Xcbar del[Xc,mu]-del[Xcbar,mu] Xc) Y1[mu] - gVXd Xdbar.Ga[mu].Xd Y1[mu] - gAXd Xdbar.Ga[mu].Ga[5].Xd Y1[mu] - 1/2 gAXm Xmbar.Ga[mu].Ga[5].Xm Y1[mu];
+
+LVSM := - gVe ebar.Ga[mu].e Y1[mu] - gAe ebar.Ga[mu].Ga[5].e Y1[mu];
+
+LVNew := LVDM + LVSM;

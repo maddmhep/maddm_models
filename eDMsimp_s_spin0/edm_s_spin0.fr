@@ -1,0 +1,150 @@
+(* ************************************************************************** *)
+(* *****  FeynRules model file: Simplified DM models                    ***** *)
+(* *****                        DM-e scattering real spin-0 mediator    ***** *)
+(* *****                                                                ***** *)
+(* *****  Author:               Gian Marco Lucchetti                    ***** *)
+(* *****  Date:                 29/05/2025                              ***** *)
+(* ************************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "eDMsimp_s_spin0";
+
+M$Information = {
+ Authors      -> {"Gian Marco Lucchetti"}, 
+ Institutions -> {"University of Bologna"},
+ Emails       -> {"gianmarco.lucchetti@unibo.it"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/",  
+ References   -> {"Haider Alhazmi et al., arXiv:2006.16252v2"},
+ Version      -> "1.0",
+ Date         -> "2025.05.29"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* none *) 
+
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = {
+ {DMC, 2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {DMC, 2}, {QED, 2}
+};
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+    S[7] == {
+        ClassName -> Xr,
+        SelfConjugate -> True,
+        Mass -> {MXr, 1.},
+        Width -> 0,
+        PDG -> 51,
+        TeX -> Subscript[X,r],
+        FullName -> "Real scalar DM" },
+	
+	S[8] == {
+        ClassName -> Xc,
+        SelfConjugate -> False,
+        Mass -> {MXc, 1.},
+        Width -> 0,
+        PDG -> 52,
+        TeX -> Subscript[X,c],
+        FullName -> "Complex scalar DM" },
+
+    F[7] == {
+        ClassName -> Xd,
+        SelfConjugate -> False,
+        Mass -> {MXd, 1.0},
+        Width -> 0,
+        PDG -> 53,
+        TeX -> Subscript[X,d],
+        FullName -> "Dirac DM" },
+
+    F[8] == {
+        ClassName -> Xm,
+        SelfConjugate -> True,
+        Mass -> {MXm, 1.0},
+        Width -> 0,
+        PDG -> 55,
+        TeX -> Subscript[X,m],
+        FullName -> "Majorana DM" },
+
+    S[12] == {
+        ClassName -> Y0,
+	    SelfConjugate -> True,
+	    Mass -> {MY0, 100.},
+        Width -> 0,
+        PDG -> 54,
+        TeX -> Subscript[Y,0],
+        FullName -> "Scalar mediator" }
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+
+    gSXr =={
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,SXr],
+        Description -> "Xr-Y0 scalar coupling",
+        Value -> 0. },     
+
+    gSXc =={ 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,SXc],
+        Description -> "Xc-Y0 scalar coupling",
+        Value -> 0. },
+
+    gSXd == { 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,SXd],
+        Description -> "Xd-Y0 scalar coupling",
+        Value -> 1. },
+
+    gSXm == {
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,SXm],
+        Description -> "Xm-Y0 scalar coupling",
+        Value -> 0. },
+
+    gSe == { 
+        ParameterType -> External,
+        InteractionOrder -> {DMC, 1},
+        BlockName -> DMINPUTS,
+        TeX -> Subscript[g,Se],
+        Description -> "e-Y0 scalar coupling",
+        Value -> 1. }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LSDM := - 1/2 MXr gSXr Xr Xr Y0 - MXc gSXc Xcbar Xc Y0 - gSXd Xdbar.Xd Y0 - 1/2 gSXm Xmbar.Xm Y0;
+
+LSSM := - gSe ebar.e Y0;
+
+LSNew := LSDM + LSSM;

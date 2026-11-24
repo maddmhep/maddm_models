@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+__MACOSX/
+
+# Python bytecode (created when MG5_aMC imports a UFO)
+__pycache__/
+*.py[cod]
+
+# Pickled UFO cache written by MG5_aMC on import (py3_model.pkl,
+# py3_model_Feynman.pkl, ...). It is regenerated automatically and a stale
+# copy can shadow changes to the UFO python files.
+*.pkl
+
+# Zipped copies of the UFO folders: the UFO directory in git is the
+# reference, archives go stale
+*.zip
+*.tgz
+*.tar.gz
+
+# Mathematica / FeynRules scratch files
+*.nb~
+*.mx
+*.m~
+*~
