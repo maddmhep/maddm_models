@@ -1,0 +1,52 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+Notebook[{
+
+Cell["DMsimp_s_spin1_MD", "Title"],
+
+Cell["\<\
+s-channel spin-1 simplified DM model (DMsimp v2.0), MadDM version. \
+This notebook loads FeynRules, the shared SM.fr at the root of the \
+maddm_models repository and DMsimp_s_spin1_MD.fr, and exports the UFO \
+into the folder DMsimp_s_spin1_MD/ next to this notebook.\
+\>", "Text"],
+
+Cell["Set the path of your FeynRules installation:", "Text"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$FeynRulesPath", "=",
+   RowBox[{"SetDirectory", "[", "\"\</path/to/feynrules-current\>\"", "]"}]}],
+  ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"<<", "FeynRules`"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[",
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"LoadModel", "[",
+  RowBox[{"\"\<../SM.fr\>\"", ",", "\"\<DMsimp_s_spin1_MD.fr\>\""}],
+  "]"}]], "Input"],
+
+Cell["Feynman rules of the new-physics sector:", "Text"],
+
+Cell[BoxData[
+ RowBox[{"FeynmanRules", "[", "L1DM", "]"}]], "Input"],
+
+Cell["Export the UFO (SM + new physics):", "Text"],
+
+Cell[BoxData[
+ RowBox[{"WriteUFO", "[",
+  RowBox[{
+   RowBox[{"LSM", "+", "L1DM"}], ",",
+   RowBox[{"Output", "\[Rule]", "\"\<DMsimp_s_spin1_MD\>\""}]}], "]"}]], "Input"]
+},
+WindowSize->{1000, 800}
+]

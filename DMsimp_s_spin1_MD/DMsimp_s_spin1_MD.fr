@@ -1,0 +1,376 @@
+(* ************************************************************************** *)
+(* *****  FeynRules model file: Simplified DM models                    ***** *)
+(* *****                        s-channel spin-1 mediator, MadDM version ***** *)
+(* *****                                                                ***** *)
+(* *****  Authors: A. Martini, K. Mawatari, J. Wang, C. Zhang,          ***** *)
+(* *****           B. Zaldivar (DMsimp v2.0)                            ***** *)
+(* ************************************************************************** *)
+
+(* This file was reconstructed from the UFO DMsimp_s_spin1_MD (exported with
+   FeynRules 2.3.24 on 2016.10.26 as "DMsimp_s_spin1_mdmo"), following the
+   official DMsimp spin-1 model file dm_s_spin1.fr of
+   http://feynrules.irmp.ucl.ac.be/wiki/DMsimp.
+   Differences with respect to the official DMsimp_s_spin1 model:
+     - the dark-sector particles carry the "~" prefix used by MadDM
+       (~xr, ~xc/~xcb, ~xd/~xdb), the mediator is called y1;
+     - no flavour-violating couplings (added in DMsimp v2.1);
+     - the DM couplings carry the interaction order QED instead of DMV, and no
+       limit is set on DMV. In the original UFO only gnu33 kept the order DMV:
+       this is reproduced below, but it looks like a leftover of a manual edit
+       of the UFO and can safely be changed to QED.
+   It is meant to be loaded together with the SM.fr at the root of the
+   maddm_models repository (FeynRules SM v1.4.6). *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_s_spin1_MD";
+
+M$Information = {
+  Authors      -> {"A. Martini", "K. Mawatari", "J. Wang", "C. Zhang", "B. Zaldivar"},
+  URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp",
+  References   -> {"M. Backovic et al., arXiv:1508.00564"},
+  Version      -> "2.0",
+  Date         -> "2016.09.23"
+};
+
+
+(* ************************** *)
+(* *****  Interaction    ***** *)
+(* *****  orders         ***** *)
+(* ************************** *)
+M$InteractionOrderHierarchy = {
+  {QCD, 1},
+  {QED, 2},
+  {DMV, 1}
+};
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+  (* Real scalar DM: no coupling to a spin-1 mediator at renormalisable level *)
+  S[7] == {
+    ClassName        -> Xr,
+    SelfConjugate    -> True,
+    Mass             -> {MXr, 10.},
+    Width            -> 0,
+    PDG              -> 5000511,
+    ParticleName     -> "~xr",
+    PropagatorLabel  -> "xr",
+    PropagatorType   -> ScalarDash,
+    PropagatorArrow  -> None,
+    FullName         -> "Real scalar DM"
+  },
+
+  S[8] == {
+    ClassName        -> Xc,
+    SelfConjugate    -> False,
+    Mass             -> {MXc, 10.},
+    Width            -> 0,
+    PDG              -> 5000512,
+    ParticleName     -> "~xc",
+    AntiParticleName -> "~xcb",
+    PropagatorLabel  -> "xc",
+    PropagatorType   -> ScalarDash,
+    PropagatorArrow  -> Forward,
+    FullName         -> "Complex scalar DM"
+  },
+
+  F[7] == {
+    ClassName        -> Xd,
+    SelfConjugate    -> False,
+    Mass             -> {MXd, 10.},
+    Width            -> 0,
+    PDG              -> 5000521,
+    ParticleName     -> "~xd",
+    AntiParticleName -> "~xdb",
+    PropagatorLabel  -> "xd",
+    PropagatorType   -> Straight,
+    PropagatorArrow  -> Forward,
+    FullName         -> "Dirac DM"
+  },
+
+  V[7] == {
+    ClassName        -> Y1,
+    SelfConjugate    -> True,
+    Mass             -> {MY1, 1000.},
+    Width            -> {WY1, 10.},
+    PDG              -> 5000001,
+    ParticleName     -> "y1",
+    PropagatorLabel  -> "Y1",
+    PropagatorType   -> Sine,
+    PropagatorArrow  -> None,
+    FullName         -> "Spin-1 mediator"
+  }
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+(* All couplings live in the block DMINPUTS, in the order of the LHA codes
+   1..24 of the original UFO. *)
+M$Parameters = {
+
+  (* --- couplings to dark matter --- *)
+  gVXc == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 1,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, VXc],
+    Description      -> "Xc-Y1 vector coupling"
+  },
+  gVXd == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 2,
+    Value            -> 1.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, VXd],
+    Description      -> "Xd-Y1 vector coupling"
+  },
+  gAXd == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 3,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, AXd],
+    Description      -> "Xd-Y1 axial coupling"
+  },
+
+  (* --- vector couplings to quarks --- *)
+  gVd11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 4,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vd11],
+    Description      -> "d-Y1 vector coupling"
+  },
+  gVu11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 5,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vu11],
+    Description      -> "u-Y1 vector coupling"
+  },
+  gVd22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 6,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vd22],
+    Description      -> "s-Y1 vector coupling"
+  },
+  gVu22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 7,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vu22],
+    Description      -> "c-Y1 vector coupling"
+  },
+  gVd33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 8,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vd33],
+    Description      -> "b-Y1 vector coupling"
+  },
+  gVu33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 9,
+    Value            -> 0.25,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vu33],
+    Description      -> "t-Y1 vector coupling"
+  },
+
+  (* --- vector couplings to charged leptons --- *)
+  gVl11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 10,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ve],
+    Description      -> "e-Y1 vector coupling"
+  },
+  gVl22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 11,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vmu],
+    Description      -> "mu-Y1 vector coupling"
+  },
+  gVl33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 12,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Vta],
+    Description      -> "ta-Y1 vector coupling"
+  },
+
+  (* --- axial couplings to quarks --- *)
+  gAd11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 13,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ad11],
+    Description      -> "d-Y1 axial coupling"
+  },
+  gAu11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 14,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Au11],
+    Description      -> "u-Y1 axial coupling"
+  },
+  gAd22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 15,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ad22],
+    Description      -> "s-Y1 axial coupling"
+  },
+  gAu22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 16,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Au22],
+    Description      -> "c-Y1 axial coupling"
+  },
+  gAd33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 17,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ad33],
+    Description      -> "b-Y1 axial coupling"
+  },
+  gAu33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 18,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Au33],
+    Description      -> "t-Y1 axial coupling"
+  },
+
+  (* --- axial couplings to charged leptons --- *)
+  gAl11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 19,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ae],
+    Description      -> "e-Y1 axial coupling"
+  },
+  gAl22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 20,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Amu],
+    Description      -> "mu-Y1 axial coupling"
+  },
+  gAl33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 21,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Ata],
+    Description      -> "ta-Y1 axial coupling"
+  },
+
+  (* --- couplings to left-handed neutrinos --- *)
+  gnu11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 22,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, nue],
+    Description      -> "ve-Y1 coupling"
+  },
+  gnu22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 23,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, num],
+    Description      -> "vm-Y1 coupling"
+  },
+  gnu33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 24,
+    Value            -> 0.,
+    InteractionOrder -> {DMV, 1}, (* as in the original UFO, see header *)
+    TeX              -> Subscript[g, nut],
+    Description      -> "vt-Y1 coupling"
+  }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+(* Y1 - dark matter *)
+L1X := I gVXc/2 (Xcbar del[Xc, mu] - del[Xcbar, mu] Xc) Y1[mu] +
+       gVXd Xdbar.Ga[mu].Xd Y1[mu] +
+       gAXd Xdbar.Ga[mu].Ga[5].Xd Y1[mu];
+
+(* Y1 - quarks *)
+L1SM := Y1[mu] (
+    gVd11 dbar.Ga[mu].d + gAd11 dbar.Ga[mu].Ga[5].d +
+    gVu11 ubar.Ga[mu].u + gAu11 ubar.Ga[mu].Ga[5].u +
+    gVd22 sbar.Ga[mu].s + gAd22 sbar.Ga[mu].Ga[5].s +
+    gVu22 cbar.Ga[mu].c + gAu22 cbar.Ga[mu].Ga[5].c +
+    gVd33 bbar.Ga[mu].b + gAd33 bbar.Ga[mu].Ga[5].b +
+    gVu33 tbar.Ga[mu].t + gAu33 tbar.Ga[mu].Ga[5].t );
+
+(* Y1 - leptons *)
+L1SMlep := Y1[mu] (
+    gVl11 ebar.Ga[mu].e   + gAl11 ebar.Ga[mu].Ga[5].e +
+    gVl22 mubar.Ga[mu].mu + gAl22 mubar.Ga[mu].Ga[5].mu +
+    gVl33 tabar.Ga[mu].ta + gAl33 tabar.Ga[mu].Ga[5].ta +
+    gnu11 vebar.Ga[mu].ProjM.ve +
+    gnu22 vmbar.Ga[mu].ProjM.vm +
+    gnu33 vtbar.Ga[mu].ProjM.vt );
+
+L1DM := L1X + L1SM + L1SMlep;
