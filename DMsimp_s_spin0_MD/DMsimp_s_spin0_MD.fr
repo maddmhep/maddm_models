@@ -1,0 +1,296 @@
+(* ************************************************************************** *)
+(* *****  FeynRules model file: Simplified DM models                    ***** *)
+(* *****                        s-channel spin-0 mediator, MadDM version ***** *)
+(* *****                                                                ***** *)
+(* *****  Authors: A. Martini, K. Mawatari, J. Wang, C. Zhang           ***** *)
+(* *****           (DMsimp v1.1)                                        ***** *)
+(* ************************************************************************** *)
+
+(* MadDM version of DMsimp_s_spin0 (dm_s_spin0.fr,
+   http://feynrules.irmp.ucl.ac.be/wiki/DMsimp): dark-sector particles named
+   ~xr, ~xc, ~xd, mediator y0, couplings with interaction order QED.
+   Load together with ../SM.fr. *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_s_spin0_MD";
+
+M$Information = {
+  Authors      -> {"A. Martini", "K. Mawatari", "J. Wang", "C. Zhang"},
+  URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp",
+  References   -> {"M. Backovic et al., arXiv:1508.00564"},
+  Version      -> "1.1",
+  Date         -> "2016.06.02"
+};
+
+
+(* ************************** *)
+(* *****  Interaction    ***** *)
+(* *****  orders         ***** *)
+(* ************************** *)
+M$InteractionOrderHierarchy = {
+  {QCD, 1},
+  {QED, 2}
+};
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+  S[7] == {
+    ClassName        -> Xr,
+    SelfConjugate    -> True,
+    Mass             -> {MXr, 10.},
+    Width            -> 0,
+    PDG              -> 5000511,
+    ParticleName     -> "~xr",
+    PropagatorLabel  -> "xr",
+    PropagatorType   -> ScalarDash,
+    PropagatorArrow  -> None,
+    FullName         -> "Real scalar DM"
+  },
+
+  S[8] == {
+    ClassName        -> Xc,
+    SelfConjugate    -> False,
+    Mass             -> {MXc, 10.},
+    Width            -> 0,
+    PDG              -> 5000512,
+    ParticleName     -> "~xc",
+    AntiParticleName -> "~xcb",
+    PropagatorLabel  -> "xc",
+    PropagatorType   -> ScalarDash,
+    PropagatorArrow  -> Forward,
+    FullName         -> "Complex scalar DM"
+  },
+
+  F[7] == {
+    ClassName        -> Xd,
+    SelfConjugate    -> False,
+    Mass             -> {MXd, 10.},
+    Width            -> 0,
+    PDG              -> 5000521,
+    ParticleName     -> "~xd",
+    AntiParticleName -> "~xdb",
+    PropagatorLabel  -> "xd",
+    PropagatorType   -> Straight,
+    PropagatorArrow  -> Forward,
+    FullName         -> "Dirac DM"
+  },
+
+  S[9] == {
+    ClassName        -> Y0,
+    SelfConjugate    -> True,
+    Mass             -> {MY0, 1000.},
+    Width            -> {WY0, 10.},
+    PDG              -> 5000000,
+    ParticleName     -> "y0",
+    PropagatorLabel  -> "Y0",
+    PropagatorType   -> ScalarDash,
+    PropagatorArrow  -> None,
+    FullName         -> "Spin-0 mediator"
+  }
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+M$Parameters = {
+
+  (* --- couplings to dark matter --- *)
+  gSXr == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 1,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, SXr],
+    Description      -> "Xr-Y0 scalar coupling"
+  },
+  gSXc == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 2,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, SXc],
+    Description      -> "Xc-Y0 scalar coupling"
+  },
+  gSXd == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 3,
+    Value            -> 1.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, SXd],
+    Description      -> "Xd-Y0 scalar coupling"
+  },
+  gPXd == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 4,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, PXd],
+    Description      -> "Xd-Y0 pseudoscalar coupling"
+  },
+
+  (* --- scalar couplings to quarks, in units of the Yukawa couplings
+         (the interaction order QED comes with the Yukawa) --- *)
+  gSd11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 5,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Sd11],
+    Description      -> "d-Y0 scalar coupling"
+  },
+  gSu11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 6,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Su11],
+    Description      -> "u-Y0 scalar coupling"
+  },
+  gSd22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 7,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Sd22],
+    Description      -> "s-Y0 scalar coupling"
+  },
+  gSu22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 8,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Su22],
+    Description      -> "c-Y0 scalar coupling"
+  },
+  gSd33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 9,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Sd33],
+    Description      -> "b-Y0 scalar coupling"
+  },
+  gSu33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 10,
+    Value            -> 1.,
+    TeX              -> Subscript[g, Su33],
+    Description      -> "t-Y0 scalar coupling"
+  },
+
+  (* --- pseudoscalar couplings to quarks (in units of the Yukawa couplings) --- *)
+  gPd11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 11,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pd11],
+    Description      -> "d-Y0 pseudoscalar coupling"
+  },
+  gPu11 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 12,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pu11],
+    Description      -> "u-Y0 pseudoscalar coupling"
+  },
+  gPd22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 13,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pd22],
+    Description      -> "s-Y0 pseudoscalar coupling"
+  },
+  gPu22 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 14,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pu22],
+    Description      -> "c-Y0 pseudoscalar coupling"
+  },
+  gPd33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 15,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pd33],
+    Description      -> "b-Y0 pseudoscalar coupling"
+  },
+  gPu33 == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 16,
+    Value            -> 0.,
+    TeX              -> Subscript[g, Pu33],
+    Description      -> "t-Y0 pseudoscalar coupling"
+  },
+
+  (* --- effective couplings to gluons (L0SMg, not exported to the UFO) --- *)
+  Lambda == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 17,
+    Value            -> 10000.,
+    TeX              -> \[CapitalLambda],
+    Description      -> "cutoff scale"
+  },
+  gSg == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 18,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Sg],
+    Description      -> "g-Y0 scalar coupling"
+  },
+  gPg == {
+    ParameterType    -> External,
+    BlockName        -> DMINPUTS,
+    OrderBlock       -> 19,
+    Value            -> 0.,
+    InteractionOrder -> {QED, 1},
+    TeX              -> Subscript[g, Pg],
+    Description      -> "g-Y0 pseudoscalar coupling"
+  }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+(* Y0 - dark matter *)
+L0X := 1/2 MXr gSXr Xr Xr Y0 +
+       MXc gSXc Xcbar Xc Y0 +
+       Xdbar.(gSXd + I gPXd Ga[5]).Xd Y0;
+
+(* Y0 - quarks, couplings proportional to the Yukawa couplings *)
+L0SM := 1/Sqrt[2] (
+    ydo dbar.(gSd11 + I gPd11 Ga[5]).d +
+    yup ubar.(gSu11 + I gPu11 Ga[5]).u +
+    ys  sbar.(gSd22 + I gPd22 Ga[5]).s +
+    yc  cbar.(gSu22 + I gPu22 Ga[5]).c +
+    yb  bbar.(gSd33 + I gPd33 Ga[5]).b +
+    yt  tbar.(gSu33 + I gPu33 Ga[5]).t ) Y0;
+
+(* Y0 - gluons, effective operators *)
+L0SMg := 1/Lambda FS[G, mu, nu, a] (gSg FS[G, mu, nu, a] + gPg Dual[FS][G, mu, nu, a]) Y0;
+
+(* Lagrangian exported to the UFO (the gluon operators are not included) *)
+L0DM := L0X + L0SM;

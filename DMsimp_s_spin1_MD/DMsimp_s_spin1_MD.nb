@@ -14,6 +14,23 @@ maddm_models repository and DMsimp_s_spin1_MD.fr, and exports the UFO \
 into the folder DMsimp_s_spin1_MD/ next to this notebook.\
 \>", "Text"],
 
+Cell["\<\
+Commutator and MatrixSymbol are built-in symbols in recent Mathematica \
+versions and clash with FeynRules: remove them before loading FeynRules. \
+The parallel subkernels launched by FeynRules would still see the built-in \
+Commutator, so parallelisation is switched off.\
+\>", "Text"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Unprotect", "[", 
+   RowBox[{"Commutator", ",", "MatrixSymbol"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Remove", "[", 
+   RowBox[{"Commutator", ",", "MatrixSymbol"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"FR$Parallel", "=", "False"}], ";"}]}], "Input"],
+
 Cell["Set the path of your FeynRules installation:", "Text"],
 
 Cell[BoxData[

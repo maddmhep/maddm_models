@@ -1,0 +1,69 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+Notebook[{
+
+Cell["DMsimp_s_spin0_MD", "Title"],
+
+Cell["\<\
+s-channel spin-0 simplified DM model (DMsimp v1.1), MadDM version. \
+This notebook loads FeynRules, the shared SM.fr at the root of the \
+maddm_models repository and DMsimp_s_spin0_MD.fr, and exports the UFO \
+into the folder DMsimp_s_spin0_MD/ next to this notebook.\
+\>", "Text"],
+
+Cell["\<\
+Commutator and MatrixSymbol are built-in symbols in recent Mathematica \
+versions and clash with FeynRules: remove them before loading FeynRules. \
+The parallel subkernels launched by FeynRules would still see the built-in \
+Commutator, so parallelisation is switched off.\
+\>", "Text"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Unprotect", "[", 
+   RowBox[{"Commutator", ",", "MatrixSymbol"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Remove", "[", 
+   RowBox[{"Commutator", ",", "MatrixSymbol"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"FR$Parallel", "=", "False"}], ";"}]}], "Input"],
+
+Cell["Set the path of your FeynRules installation:", "Text"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$FeynRulesPath", "=",
+   RowBox[{"SetDirectory", "[", "\"\</path/to/feynrules-current\>\"", "]"}]}],
+  ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"<<", "FeynRules`"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[",
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"LoadModel", "[",
+  RowBox[{"\"\<../SM.fr\>\"", ",", "\"\<DMsimp_s_spin0_MD.fr\>\""}],
+  "]"}]], "Input"],
+
+Cell["Feynman rules of the new-physics sector:", "Text"],
+
+Cell[BoxData[
+ RowBox[{"FeynmanRules", "[", "L0DM", "]"}]], "Input"],
+
+Cell["Export the UFO (SM + new physics):", "Text"],
+
+Cell[BoxData[
+ RowBox[{"WriteUFO", "[",
+  RowBox[{
+   RowBox[{"LSM", "+", "L0DM"}], ",",
+   RowBox[{"Output", "\[Rule]", "\"\<DMsimp_s_spin0_MD\>\""}]}], "]"}]], "Input"]
+},
+WindowSize->{1000, 800}
+]

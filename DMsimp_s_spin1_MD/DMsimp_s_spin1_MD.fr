@@ -6,20 +6,10 @@
 (* *****           B. Zaldivar (DMsimp v2.0)                            ***** *)
 (* ************************************************************************** *)
 
-(* This file was reconstructed from the UFO DMsimp_s_spin1_MD (exported with
-   FeynRules 2.3.24 on 2016.10.26 as "DMsimp_s_spin1_mdmo"), following the
-   official DMsimp spin-1 model file dm_s_spin1.fr of
-   http://feynrules.irmp.ucl.ac.be/wiki/DMsimp.
-   Differences with respect to the official DMsimp_s_spin1 model:
-     - the dark-sector particles carry the "~" prefix used by MadDM
-       (~xr, ~xc/~xcb, ~xd/~xdb), the mediator is called y1;
-     - no flavour-violating couplings (added in DMsimp v2.1);
-     - the DM couplings carry the interaction order QED instead of DMV, and no
-       limit is set on DMV. In the original UFO only gnu33 kept the order DMV:
-       this is reproduced below, but it looks like a leftover of a manual edit
-       of the UFO and can safely be changed to QED.
-   It is meant to be loaded together with the SM.fr at the root of the
-   maddm_models repository (FeynRules SM v1.4.6). *)
+(* MadDM version of DMsimp_s_spin1 v2.0 (dm_s_spin1.fr,
+   http://feynrules.irmp.ucl.ac.be/wiki/DMsimp): dark-sector particles named
+   ~xr, ~xc, ~xd, mediator y1, couplings with interaction order QED, no
+   flavour-violating couplings. Load together with ../SM.fr. *)
 
 
 (* ************************** *)
@@ -112,8 +102,6 @@ M$ClassesDescription = {
 (* ************************** *)
 (* *****   Parameters   ***** *)
 (* ************************** *)
-(* All couplings live in the block DMINPUTS, in the order of the LHA codes
-   1..24 of the original UFO. *)
 M$Parameters = {
 
   (* --- couplings to dark matter --- *)
@@ -339,7 +327,7 @@ M$Parameters = {
     BlockName        -> DMINPUTS,
     OrderBlock       -> 24,
     Value            -> 0.,
-    InteractionOrder -> {DMV, 1}, (* as in the original UFO, see header *)
+    InteractionOrder -> {DMV, 1}, (* DMV, as in the UFO *)
     TeX              -> Subscript[g, nut],
     Description      -> "vt-Y1 coupling"
   }
